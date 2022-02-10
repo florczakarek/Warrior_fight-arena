@@ -7,7 +7,9 @@ import {homeRouter} from "./routes/home";
 import {warriorRouter} from "./routes/warrior";
 import {arenaRouter} from "./routes/arena";
 import {hallOfFameRouter} from "./routes/hall-of-fame";
-import { WarriorRecord } from "./records/warrior.record";
+import './utlis/db'
+import {WarriorRecord} from "./records/warrior.record";
+import {handleError} from "./utlis/error";
 
 const app = express();
 
@@ -27,6 +29,9 @@ app.use('/', homeRouter)
 app.use('/warrior', warriorRouter)
 app.use('/arena', arenaRouter)
 app.use('/hall-of-fame', hallOfFameRouter)
+
+
+app.use(handleError)
 
 app.listen(3000, 'localhost', () => {
     console.log('Listening on http://localhost:3000')
