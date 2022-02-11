@@ -67,7 +67,8 @@ export class WarriorRecord {
     }
 
     async update(): Promise<void> {
-        await pool.execute("UPDATE `warriors` SET `wins`=:wins ", {
+        await pool.execute("UPDATE `warriors` SET `wins`=:wins WHERE `id`=:id", {
+            id:this.id,
             wins: this.wins,
         })
     }
@@ -77,7 +78,7 @@ export class WarriorRecord {
         const [result] = await pool.execute("SELECT * FROM `warriors` WHERE `id`=:Id", {
             Id: id
         }) as WarriorRecordResult
-        return result.length === 0 ? null : result[0]
+        return result.length === 0 ? null : new WarriorRecord(result[0])
     }
 
     static async getAll(): Promise<WarriorRecord[]> {
@@ -86,7 +87,7 @@ export class WarriorRecord {
     }
 
     static async listTop(topCount: number): Promise<WarriorRecord[]> {
-        const [result] = await pool.execute("SELECT * FROM `warriors` ORDER BY `wins` DESC LIMIT=:topCountWinners", {
+        const [result] = await pool.execute("SELECT * FROM `warriors` ORDER BY `wins` DESC LIMIT:topCountWinners", {
             topCountWinners: topCount
         }) as WarriorRecordResult
         return result.map(obj => new WarriorRecord(obj))

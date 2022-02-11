@@ -1,0 +1,6 @@
+<!--Przekazanie danych z name do formularza by rozroznic dwa partiale-->
+<select name="{{warrior-name}}" >
+    {{#each allWarriors}}
+        <option value="{{this.id}}">{{this.name}}</option>
+    {{/each}}
+</select>
